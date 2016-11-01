@@ -11,6 +11,8 @@ import UIKit
 class CanvasViewController: UIViewController {
     
     var trayOriginalCenter: CGPoint!
+    var trayCenterWhenOpen = CGPoint(x: 187.5, y: 527.5)
+    var trayCenterWhenClose = CGPoint(x: 187.5, y: 767.5)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,8 +29,22 @@ class CanvasViewController: UIViewController {
             print("Gesture changed at: \(point)")
             let yOffset = sender.translation(in: self.view).y
             sender.view?.center = CGPoint(x: trayOriginalCenter.x, y: trayOriginalCenter.y + yOffset)
+            
+            if sender.velocity(in: self.view!).y > 0 {
+                // moving down
+                print("Moving down with velocity: \(sender.velocity(in: self.view!).y)")
+                UIView.animate(withDuration: 0.7, animations: {
+                    sender.view?.center = self.trayCenterWhenClose
+                })
+            } else {
+                // moving up
+                print("Moving up with velocity: \(sender.velocity(in: self.view!).y)")
+            }
+            
+            
         } else if sender.state == UIGestureRecognizerState.ended {
             print("Gesture ended at: \(point)")
+            print("Tray center: \(sender.view?.center)")
         }
     }
 
