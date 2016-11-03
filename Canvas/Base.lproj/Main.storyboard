@@ -54,6 +54,7 @@
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="qzI-xu-ttg" appends="YES" id="Lfb-Fi-6EE"/>
+                                    <outletCollection property="gestureRecognizers" destination="fcD-i0-ZN5" appends="YES" id="e61-WJ-nux"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -66,6 +67,11 @@
                         <action selector="onTrayPanGesture:" destination="BYZ-38-t0r" id="Z75-pp-KE7"/>
                     </connections>
                 </panGestureRecognizer>
+                <tapGestureRecognizer id="fcD-i0-ZN5">
+                    <connections>
+                        <action selector="onTreyTapGesture:" destination="BYZ-38-t0r" id="daE-Fj-KsT"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="83.5" y="152.5"/>
         </scene>

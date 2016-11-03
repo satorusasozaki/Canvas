@@ -13,8 +13,8 @@ class CanvasViewController: UIViewController {
     var trayOriginalCenter: CGPoint!
     var trayDefaultCenter = CGPoint(x: 187, y: 525)
     var trayCenterWhenOpen = CGPoint(x: 187.5, y: 527.5)
-    //var trayCenterWhenClose = CGPoint(x: 187.5, y: 767.5)
     var trayCenterWhenClose = CGPoint(x: 187.5, y: 765.0)
+    var isTrayOpen = true
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,6 +24,7 @@ class CanvasViewController: UIViewController {
     // Move view when pan is ended but it is not smooth meaning it stops once when pan ended and start animating
     @IBAction func onTrayPanGesture(_ sender: UIPanGestureRecognizer) {
         let tappedPoint = sender.location(in: self.view)
+
         if sender.state == UIGestureRecognizerState.began {
             trayOriginalCenter = sender.view?.center
             if sender.velocity(in: self.view!).y > 0 {
@@ -33,7 +34,7 @@ class CanvasViewController: UIViewController {
                 UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
                     sender.view?.center = self.trayCenterWhenClose
                 }, completion: { ( animationIsFinished :Bool) in
-                    
+                    self.isTrayOpen = false
                 })
             } else {
                 // moving up
@@ -41,7 +42,7 @@ class CanvasViewController: UIViewController {
                 UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
                     sender.view?.center = self.trayCenterWhenOpen
                 }, completion: { ( animationIsFinished :Bool) in
-                    
+                    self.isTrayOpen = true
                 })
             }
         } else if sender.state == UIGestureRecognizerState.changed {
@@ -53,6 +54,22 @@ class CanvasViewController: UIViewController {
         }
     }
 
+    @IBAction func onTreyTapGesture(_ sender: UITapGestureRecognizer) {
+        if isTrayOpen {
+            UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+                sender.view?.center = self.trayCenterWhenClose
+            }, completion: { ( animationIsFinished :Bool) in
+                self.isTrayOpen = false
+            })
+        } else {
+            UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+                sender.view?.center = self.trayCenterWhenOpen
+            }, completion: { ( animationIsFinished :Bool) in
+                self.isTrayOpen = true
+            })
+        }
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
