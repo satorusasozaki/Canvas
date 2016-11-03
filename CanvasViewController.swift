@@ -27,23 +27,39 @@ class CanvasViewController: UIViewController {
 
         if sender.state == UIGestureRecognizerState.began {
             trayOriginalCenter = sender.view?.center
+            let velocity = sender.velocity(in: self.view!).y
             if sender.velocity(in: self.view!).y > 0 {
                 // moving down
                 //print("Moving down with velocity: \(sender.velocity(in: self.view!).y)")
-                
-                UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity-100, options: UIViewAnimationOptions.curveEaseIn, animations: {
                     sender.view?.center = self.trayCenterWhenClose
-                }, completion: { ( animationIsFinished :Bool) in
+                    
+                }, completion: { (animationIsFinished: Bool) in
                     self.isTrayOpen = false
+  
                 })
+
+//                UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+//                    sender.view?.center = self.trayCenterWhenClose
+//                }, completion: { ( animationIsFinished :Bool) in
+//                    self.isTrayOpen = false
+//                })
             } else {
-                // moving up
-                //print("Moving up with velocity: \(sender.velocity(in: self.view!).y)")
-                UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+                // Moving Up
+                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity-100, options: UIViewAnimationOptions.curveEaseIn, animations: {
                     sender.view?.center = self.trayCenterWhenOpen
-                }, completion: { ( animationIsFinished :Bool) in
+                    
+                }, completion: { (animationIsFinished: Bool) in
                     self.isTrayOpen = true
                 })
+
+                // moving up
+                //print("Moving up with velocity: \(sender.velocity(in: self.view!).y)")
+//                UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+//                    sender.view?.center = self.trayCenterWhenOpen
+//                }, completion: { ( animationIsFinished :Bool) in
+//                    self.isTrayOpen = true
+//                })
             }
         } else if sender.state == UIGestureRecognizerState.changed {
             let yOffset = sender.translation(in: self.view).y
@@ -54,17 +70,21 @@ class CanvasViewController: UIViewController {
         }
     }
 
+    // Pan gesture is not calling
     @IBAction func onTreyTapGesture(_ sender: UITapGestureRecognizer) {
         if isTrayOpen {
-            UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 50, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 sender.view?.center = self.trayCenterWhenClose
-            }, completion: { ( animationIsFinished :Bool) in
+                
+            }, completion: { (animationIsFinished: Bool) in
                 self.isTrayOpen = false
             })
+
         } else {
-            UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 50, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 sender.view?.center = self.trayCenterWhenOpen
-            }, completion: { ( animationIsFinished :Bool) in
+            
+            }, completion: { (animationIsFinished: Bool) in
                 self.isTrayOpen = true
             })
         }
