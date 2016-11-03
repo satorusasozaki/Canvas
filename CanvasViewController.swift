@@ -26,13 +26,20 @@ class CanvasViewController: UIViewController {
         let tappedPoint = sender.location(in: self.view)
         if sender.state == UIGestureRecognizerState.began {
             trayOriginalCenter = sender.view?.center
+
+        } else if sender.state == UIGestureRecognizerState.changed {
+            let yOffset = sender.translation(in: self.view).y
+           sender.view?.center = CGPoint(x: trayOriginalCenter.x, y: trayOriginalCenter.y + yOffset)
+        } else if sender.state == UIGestureRecognizerState.ended {
+            //print("Tray center: \(sender.view?.center)")
             if sender.velocity(in: self.view!).y > 0 {
+                let velocity = sender.velocity(in: self.view!).y
                 // moving down
                 //print("Moving down with velocity: \(sender.velocity(in: self.view!).y)")
-                
-                UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity-100, options: UIViewAnimationOptions.curveEaseIn, animations: {
                     sender.view?.center = self.trayCenterWhenClose
-                }, completion: { ( animationIsFinished :Bool) in
+                    
+                }, completion: { (animationIsFinished: Bool) in
                     
                 })
             } else {
@@ -44,12 +51,6 @@ class CanvasViewController: UIViewController {
                     
                 })
             }
-        } else if sender.state == UIGestureRecognizerState.changed {
-            let yOffset = sender.translation(in: self.view).y
-            //sender.view?.center = CGPoint(x: trayOriginalCenter.x, y: trayOriginalCenter.y + yOffset)
-        } else if sender.state == UIGestureRecognizerState.ended {
-            //print("Tray center: \(sender.view?.center)")
-
         }
     }
 
