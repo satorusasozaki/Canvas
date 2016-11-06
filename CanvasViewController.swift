@@ -28,66 +28,53 @@ class CanvasViewController: UIViewController {
         if sender.state == UIGestureRecognizerState.began {
             trayOriginalCenter = sender.view?.center
             let velocity = sender.velocity(in: self.view!).y
+                } else if sender.state == UIGestureRecognizerState.changed {
+            let yOffset = sender.translation(in: self.view).y
+            sender.view?.center = CGPoint(x: trayOriginalCenter.x, y: trayOriginalCenter.y + yOffset)
+        } else if sender.state == UIGestureRecognizerState.ended {
+            //print("Tray center: \(sender.view?.center)")
             if sender.velocity(in: self.view!).y > 0 {
+                let velocity = sender.velocity(in: self.view!).y
                 // moving down
                 //print("Moving down with velocity: \(sender.velocity(in: self.view!).y)")
                 UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity-100, options: UIViewAnimationOptions.curveEaseIn, animations: {
                     sender.view?.center = self.trayCenterWhenClose
                     
                 }, completion: { (animationIsFinished: Bool) in
-                    self.isTrayOpen = false
-  
-                })
-
-//                UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
-//                    sender.view?.center = self.trayCenterWhenClose
-//                }, completion: { ( animationIsFinished :Bool) in
-//                    self.isTrayOpen = false
-//                })
-            } else {
-                // Moving Up
-                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity-100, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                    sender.view?.center = self.trayCenterWhenOpen
                     
-                }, completion: { (animationIsFinished: Bool) in
-                    self.isTrayOpen = true
                 })
-
+            } else {
                 // moving up
                 //print("Moving up with velocity: \(sender.velocity(in: self.view!).y)")
-//                UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
-//                    sender.view?.center = self.trayCenterWhenOpen
-//                }, completion: { ( animationIsFinished :Bool) in
-//                    self.isTrayOpen = true
-//                })
+                UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+                    sender.view?.center = self.trayCenterWhenOpen
+                }, completion: { ( animationIsFinished :Bool) in
+                    
+                })
             }
-        } else if sender.state == UIGestureRecognizerState.changed {
-            let yOffset = sender.translation(in: self.view).y
-            //sender.view?.center = CGPoint(x: trayOriginalCenter.x, y: trayOriginalCenter.y + yOffset)
-        } else if sender.state == UIGestureRecognizerState.ended {
-            //print("Tray center: \(sender.view?.center)")
 
         }
     }
 
     // Pan gesture is not calling
+    // need to research how to prioritize two gestures
     @IBAction func onTreyTapGesture(_ sender: UITapGestureRecognizer) {
-        if isTrayOpen {
-            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 50, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                sender.view?.center = self.trayCenterWhenClose
-                
-            }, completion: { (animationIsFinished: Bool) in
-                self.isTrayOpen = false
-            })
-
-        } else {
-            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 50, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                sender.view?.center = self.trayCenterWhenOpen
-            
-            }, completion: { (animationIsFinished: Bool) in
-                self.isTrayOpen = true
-            })
-        }
+//        if isTrayOpen {
+//            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 50, options: UIViewAnimationOptions.curveEaseIn, animations: {
+//                sender.view?.center = self.trayCenterWhenClose
+//                
+//            }, completion: { (animationIsFinished: Bool) in
+//                self.isTrayOpen = false
+//            })
+//
+//        } else {
+//            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 50, options: UIViewAnimationOptions.curveEaseIn, animations: {
+//                sender.view?.center = self.trayCenterWhenOpen
+//            
+//            }, completion: { (animationIsFinished: Bool) in
+//                self.isTrayOpen = true
+//            })
+//        }
         
     }
     override func didReceiveMemoryWarning() {
