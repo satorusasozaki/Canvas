@@ -68,19 +68,17 @@ class CanvasViewController: UIViewController {
     @IBAction func onFacePanGesture(_ sender: UIPanGestureRecognizer) {
         print("onFacePanGesture is called")
         if sender.state == UIGestureRecognizerState.began {
+            
             let imageView = sender.view as! UIImageView
             newlyCreatedFace = UIImageView(image: imageView.image)
             self.view.addSubview(newlyCreatedFace)
             newlyCreatedFace.center = imageView.center
             newlyCreatedFace.center.y += trayView.frame.origin.y
             faceOriginalCenter = newlyCreatedFace.center
-            print("begin: \(newlyCreatedFace.center)")
-            print("faceOriginalCenter: \(faceOriginalCenter)")
             
         } else if sender.state == UIGestureRecognizerState.changed {
             let offset = sender.translation(in: self.view)
             newlyCreatedFace.center = CGPoint(x: faceOriginalCenter.x + offset.x, y: faceOriginalCenter.y + offset.y)
-            print("change: \(newlyCreatedFace.center)")
         } else if sender.state == UIGestureRecognizerState.ended {
             
         }
