@@ -11,13 +11,17 @@ import UIKit
 class CanvasViewController: UIViewController {
     
     var trayOriginalCenter: CGPoint!
+    var faceOriginalCenter: CGPoint!
     var trayDefaultCenter = CGPoint(x: 187, y: 525)
     var trayCenterWhenOpen = CGPoint(x: 187.5, y: 527.5)
     var trayCenterWhenClose = CGPoint(x: 187.5, y: 765.0)
     var isTrayOpen = true
+    var newlyCreatedFace: UIImageView!
+    @IBOutlet weak var trayView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("original: \(happyFaceImageView.center)")
         
     }
     // How to do animation like control center? 
@@ -61,6 +65,27 @@ class CanvasViewController: UIViewController {
 
         }
     }
+    @IBAction func onFacePanGesture(_ sender: UIPanGestureRecognizer) {
+        print("onFacePanGesture is called")
+        if sender.state == UIGestureRecognizerState.began {
+            let imageView = sender.view as! UIImageView
+            newlyCreatedFace = UIImageView(image: imageView.image)
+            self.view.addSubview(newlyCreatedFace)
+            newlyCreatedFace.center = imageView.center
+            newlyCreatedFace.center.y += trayView.frame.origin.y
+            faceOriginalCenter = newlyCreatedFace.center
+            print("begin: \(newlyCreatedFace.center)")
+            print("faceOriginalCenter: \(faceOriginalCenter)")
+            
+        } else if sender.state == UIGestureRecognizerState.changed {
+            let offset = sender.translation(in: self.view)
+            newlyCreatedFace.center = CGPoint(x: faceOriginalCenter.x + offset.x, y: faceOriginalCenter.y + offset.y)
+            print("change: \(newlyCreatedFace.center)")
+        } else if sender.state == UIGestureRecognizerState.ended {
+            
+        }
+    }
+    @IBOutlet weak var happyFaceImageView: UIImageView!
 
     // Pan gesture is not calling
     // need to research how to prioritize two gestures
