@@ -18,7 +18,7 @@ class CanvasViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        
     }
     // How to do animation like control center? 
     // Move view when pan is ended but it is not smooth meaning it stops once when pan ended and start animating
@@ -37,16 +37,22 @@ class CanvasViewController: UIViewController {
                 let velocity = sender.velocity(in: self.view!).y
                 // moving down
                 //print("Moving down with velocity: \(sender.velocity(in: self.view!).y)")
-                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity-100, options: UIViewAnimationOptions.curveEaseIn, animations: {
+//                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity-100, options: UIViewAnimationOptions.curveEaseIn, animations: {
+//                    sender.view?.center = self.trayCenterWhenClose
+//                    
+//                }, completion: { (animationIsFinished: Bool) in
+//                    
+//                })
+                UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
                     sender.view?.center = self.trayCenterWhenClose
-                    
-                }, completion: { (animationIsFinished: Bool) in
+                }, completion: { ( animationIsFinished :Bool) in
                     
                 })
+
             } else {
                 // moving up
                 //print("Moving up with velocity: \(sender.velocity(in: self.view!).y)")
-                UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+                UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
                     sender.view?.center = self.trayCenterWhenOpen
                 }, completion: { ( animationIsFinished :Bool) in
                     
@@ -59,6 +65,7 @@ class CanvasViewController: UIViewController {
     // Pan gesture is not calling
     // need to research how to prioritize two gestures
     @IBAction func onTreyTapGesture(_ sender: UITapGestureRecognizer) {
+        
 //        if isTrayOpen {
 //            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 50, options: UIViewAnimationOptions.curveEaseIn, animations: {
 //                sender.view?.center = self.trayCenterWhenClose
